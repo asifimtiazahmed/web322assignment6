@@ -9,24 +9,17 @@
 * Online (Heroku) URL:  https://glacial-plateau-86099.herokuapp.com/
 *
 ********************************************************************************/ 
-var dataService = require('./data-service');
-var express = require('express');
-var app = express();
-var HTTP_PORT = process.env.PORT || 8080;
-var path = require('path');
-//app.use(express.static('static'));
-//app.use(express.static('./public'));
-app.use(express.static('public'));
+var dataService = require('./data-service'); //linking the data-service file for this module
+var express = require('express'); //linking the express module here
+var app = express(); //initializing
+var HTTP_PORT = process.env.PORT || 8080; //defined the HTTP_PORT variable to use process.env.PORT to listen to available ports OR || listen to 8080
+var path = require('path'); // we require this for using paths
 
-//Resources
-      //send img resource for the 404 file
-    //  app.get("/views/404-page-04.png", function(req, res){
-    //   res.sendFile(path.join(__dirname+'/views/404-page-04.png'));
-    //  });
-    
+app.use(express.static('public')); //using the express static function to put the public folder accessible for image, css resources. 
 
-app.get("/",function(request,response){
-    response.sendFile(path.join(__dirname+ '/views/home.html'));
+//Setting routes for root folder
+app.get("/",function(request,response){                           //gets the request and sends the ressponse
+    response.sendFile(path.join(__dirname+ '/views/home.html'));  //in this case sends the file
   
 });
 app.get("/about",function(request, response){
@@ -39,11 +32,11 @@ app.get("/home",function(request, response){
 // Adding routes to the Employee, Manager and Departments
 //Employees
 app.get("/employees", function(request, response){
-  dataService.getAllEmployees()
+  dataService.getAllEmployees() //Here we dont use the { curly braces} because we are chaining functions, the .then operator goes into getAllEmployees and looks at the promise, and it take the resolve part of promise and serves up that data here. 
   .then(function(data){
     response.json(data);
   })
-  .catch(function(data){
+  .catch(function(data){    //this goes into the getAllEmployees and catches the reject part of the promise and serves that up/
     response.json({message:err})
   })
 
