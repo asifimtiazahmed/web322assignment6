@@ -14,14 +14,15 @@ var express = require('express');
 var app = express();
 var HTTP_PORT = process.env.PORT || 8080;
 var path = require('path');
-app.use(express.static('static'));
+//app.use(express.static('static'));
+//app.use(express.static('./public'));
 app.use(express.static('public'));
 
 //Resources
       //send img resource for the 404 file
-      app.get("/views/404-page-04.png", function(req, res){
-        res.sendFile(path.join(__dirname+'/views/404-page-04.png'));
-      });
+    //  app.get("/views/404-page-04.png", function(req, res){
+    //   res.sendFile(path.join(__dirname+'/views/404-page-04.png'));
+    //  });
     
 
 app.get("/",function(request,response){
