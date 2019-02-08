@@ -11,6 +11,7 @@
 ********************************************************************************/ 
 var dataService = require('./data-service'); //linking the data-service file for this module
 var express = require('express'); //linking the express module here
+var multer = require('multer');
 var app = express(); //initializing
 var HTTP_PORT = process.env.PORT || 8080; //defined the HTTP_PORT variable to use process.env.PORT to listen to available ports OR || listen to 8080
 var path = require('path'); // we require this for using paths
@@ -27,6 +28,12 @@ app.get("/about",function(request, response){
 });
 app.get("/home",function(request, response){
   response.sendFile(path.join(__dirname + '/views/home.html'));
+});
+app.get("/employees/add",function(request, response){
+  response.sendFile(path.join(__dirname + '/views/addEmployee.html'))
+});
+app.get("/images/add", function(request, response){
+  response.sendFile(path.join(__dirname+ '/views/addImage.html'))
 });
 
 // Adding routes to the Employee, Manager and Departments
