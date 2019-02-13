@@ -22,7 +22,6 @@ app.use(bodyParser());
 
 app.use(bodyParser.urlencoded({ extended:true })); //for parsing data sent via url from browser
 
-
 // Initializing multer storage engine
 const storage = multer.diskStorage({
   destination: './public/images/uploaded',
@@ -70,7 +69,7 @@ app.post("/images/add", (req, res) => {
       res.render('/images/add',{ 
       msg: err});
     } else {
-    console.log(req.file);
+  //  console.log(req.file);
    res.redirect('/images');  //redirecting to the get request of /images that was setup above
     }
   });
@@ -90,7 +89,7 @@ app.get("/images", function(request, response){
 
 //Employees
 app.get("/employees", function(request, response){
-  console.log(request.query)
+ // console.log(request.query)
   if (request.query.status){ //if this is true
     dataService.getEmployeesByStatus(request.query.status)//passing in the value from the query
     .then(function(dataFromPromiseResolve){
@@ -133,8 +132,8 @@ app.get("/employees", function(request, response){
     }
 });
 //Special employee/value get request
-app.get('/employees/:value', function(request, response){
-  console.log("This is a new one " + request.params.value);
+app.get('/employee/:value', function(request, response){
+ // console.log("This is a new one " + request.params.value);
   dataService.getEmployeeByNum(request.params.value) //sending the value to dataService
   .then(function(dataFromPromiseResolve){
     response.json(dataFromPromiseResolve);
