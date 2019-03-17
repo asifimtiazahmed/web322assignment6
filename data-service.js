@@ -1,8 +1,31 @@
+const Sequelize = require('sequelize');
 const fs = require('fs');
 var employees =[];
 var departments = [];
 var managers = [];
 var employeeToAdd = []; //asgn_3
+
+var sequelize = new Sequelize('de9fcken8a8867', 'xwfuygaaaczsqo', 'e577643532f9ea5b58ac78253cac18517e40a594356e113f28e0c3e5ad363344', {
+  host: 'ec2-54-221-201-212.compute-1.amazonaws.com',
+  dialect: 'postgres',
+  port: 5432,
+  dialectOptions: {
+  ssl: true
+  }
+ });
+// Authenticate string, this will be moved to server.js
+ sequelize
+    .authenticate()
+    .then(function() {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(function(err) {
+        console.log('Unable to connect to the database:', err);
+    });
+// Defining model "Employee"
+const Employee = sequelize.define("Employee", {
+
+})
 
 function initialize()
 {

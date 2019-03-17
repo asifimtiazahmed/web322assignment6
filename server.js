@@ -8,8 +8,15 @@
 *
 * Online (Heroku) URL:  
 * 
-*  https://glacial-plateau-86099.herokuapp.com/ 
+*  https://infinite-badlands-60405.herokuapp.com/ 
 ********************************************************************************/ 
+//Host: ec2-54-221-201-212.compute-1.amazonaws.com
+// Database: de9fcken8a8867
+//User: xwfuygaaaczsqo
+//Port: 5432
+//Password: e577643532f9ea5b58ac78253cac18517e40a594356e113f28e0c3e5ad363344
+//URI: postgres://xwfuygaaaczsqo:e577643532f9ea5b58ac78253cac18517e40a594356e113f28e0c3e5ad363344@ec2-54-221-201-212.compute-1.amazonaws.com:5432/de9fcken8a8867
+//heroku pg:psql postgresql-amorphous-92955 --app infinite-badlands-60405
 var dataService = require('./data-service'); //linking the data-service file for this module
 var express = require('express'); //linking the express module here
 var exphbs = require('express-handlebars');
