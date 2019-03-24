@@ -102,8 +102,9 @@ app.get("/employees/add",function(request, response){
   //response.sendFile(path.join(__dirname + '/views/addEmployee.html'))
   response.render('addEmployee');
 });
-app.post("/employees/add",function(request,response){
+app.post("/employees/add",function(request,response){ //When the post request come from the form this route is executed.
 dataService.addEmployee(request.body);
+console.log("Employee Added! Server side msg");
 response.redirect('/employees');
 });
 app.get("/images/add", function(request, response){
@@ -137,6 +138,7 @@ app.get("/images", function(request, response){
 
 app.post("/employee/update", (req, res) => {
   dataService.updateEmployee(req.body);
+  console.log("Employee Updated: server js")
   res.redirect("/employees");
   }); 
 
@@ -149,10 +151,12 @@ app.get("/employees", function(request, response){
   if (request.query.status){ //if this is true
     dataService.getEmployeesByStatus(request.query.status)//passing in the value from the query
     .then(function(dataFromPromiseResolve){
+      
       response.render('employees', {employees: dataFromPromiseResolve});
     })
     .catch(function(dataFromPromiseResolve){
-      response.render('employees',{message: "no results"});
+      
+      response.render('employees',{message: dataFromPromiseResolve});
     });
 
   } else if (request.query.department){
@@ -168,21 +172,23 @@ app.get("/employees", function(request, response){
   } else if (request.query.manager){
     dataService.getEmployeesByManager(request.query.manager)
     .then(function(dataFromPromiseResolve){
+      console.log("I was triggered");
       response.render('employees', {employees: dataFromPromiseResolve});
     })
     .catch(function(dataFromPromiseResolve){
-      response.render('employees',{message: "no results"});
+      response.render('employees',{message: dataFromPromiseResolve});
     });
 
     } else {
   
         dataService.getAllEmployees() //Here we dont use the {  curly braces} because we are chaining functions, the .then operator goes into getAllEmployees and looks at the promise, and it take the resolve part of promise and serves up that data here. 
         .then(function(data){
-          response.render('employees', {employees: data});;
-      
+          
+         response.render('employees', {employees: data});
+        
       })
         .catch(function(data){    //this goes into the getAllEmployees and catches the reject part of the promise and serves that up/
-          response.render('employees',{message: "no results"});
+          response.render('employees',{message: data});
       })
       
     }
@@ -207,20 +213,11 @@ app.get("/departments", function(request, response){
     response.render('departments', {departments: dataFromPromiseResolve});
   })
   .catch(function(dataFromPromiseResolve){
-    response.render('departments',{message: "no results"});
+    response.render('departments',{message: dataFromPromiseResolve});
   });
 });
 
-//Managers
-// app.get("/managers", function(request, response){
-//   dataService.getManagers()
-//   .then(function(data){
-//     response.json(data);
-//   })
-//   .catch(function(data){
-//     response.json({message:err})
-//   });  
-// });
+
 
 //Handle 404, This action needs to be at the end of the server file because otherwise it will catch other page requests.
 app.use(function(req, res){
@@ -237,9 +234,10 @@ function onHttpStart()
 dataService.initialize()
 .then(function()
 {// setup http server to listen on HTTP_PORT
+  console.log("Connected to database!")
   app.listen(HTTP_PORT, onHttpStart)
 })
 .catch(function()
 {
-console.log("Some errors were found reading JSON files on data-server.js");
+console.log("Unable to connect to database");
 });
