@@ -78,11 +78,7 @@ app.use(function(req,res,next){  //for the nav bar
   let route = req.baseUrl + req.path;
   app.locals.activeRoute = (route == "/") ? "/" : route.replace(/\/$/, "");
   next();
-  });
-
-  
-
-  
+  });  
 
 //Setting routes for root folder
 app.get("/",function(request,response){                           //gets the request and sends the ressponse
@@ -98,6 +94,22 @@ app.get("/home",function(request, response){
   //response.sendFile(path.join(__dirname + '/views/home.html'));
   response.render('home');
 });
+//department add
+app.get("/departments/add",function(request, response){
+  response.render('addDepartment');
+});
+app.post("/departments/add",function(request,response){ //When the post request come from the form this route is executed.
+dataService.addDepartment(request.body)
+.then(response.redirect('/departments'));
+console.log("Department Added! Server side msg");
+
+});
+app.post("/departments/update",function(request,response){ //When the post request come from the form this route is executed.
+  dataService.addEmployee(request.body);
+  console.log("Employee Added! Server side msg");
+  response.redirect('/employees');
+  });
+
 app.get("/employees/add",function(request, response){
   //response.sendFile(path.join(__dirname + '/views/addEmployee.html'))
   response.render('addEmployee');
