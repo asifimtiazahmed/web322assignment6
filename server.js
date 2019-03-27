@@ -105,14 +105,20 @@ console.log("Department Added! Server side msg");
 
 });
 app.post("/departments/update",function(request,response){ //When the post request come from the form this route is executed.
-  dataService.addEmployee(request.body);
-  console.log("Employee Added! Server side msg");
-  response.redirect('/employees');
+  dataService.updateDepartment(request.body);
+  console.log("Department Updated! Server side msg");
+  response.redirect('/departments');
   });
 
-app.get("/employees/add",function(request, response){
-  //response.sendFile(path.join(__dirname + '/views/addEmployee.html'))
-  response.render('addEmployee');
+app.get("/department/:departmentId",function(request, response){
+  dataService.getDepartmentById(request.params.departmentId)
+  .then(function(dataFromPromiseResolve){
+    response.render('department', {employee: dataFromPromiseResolve}) //NEED TO CREATE HANDLEBAR
+  })
+  .catch(function(dataFromPromiseResolve){
+    res.status(404).send("Department Not  Found");
+    //response.render('department',{message: dataFromPromiseResolve});
+  });
 });
 app.post("/employees/add",function(request,response){ //When the post request come from the form this route is executed.
 dataService.addEmployee(request.body);
