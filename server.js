@@ -113,18 +113,33 @@ app.post("/departments/update",function(request,response){ //When the post reque
 app.get("/department/:departmentId",function(request, response){
   dataService.getDepartmentById(request.params.departmentId)
   .then(function(dataFromPromiseResolve){
-    response.render('department', {employee: dataFromPromiseResolve}) //NEED TO CREATE HANDLEBAR
+    response.render('department', {department: dataFromPromiseResolve}) //NEED TO CREATE HANDLEBAR
   })
   .catch(function(dataFromPromiseResolve){
     res.status(404).send("Department Not  Found");
     //response.render('department',{message: dataFromPromiseResolve});
   });
 });
-app.post("/employees/add",function(request,response){ //When the post request come from the form this route is executed.
-dataService.addEmployee(request.body);
-console.log("Employee Added! Server side msg");
-response.redirect('/employees');
+app.get("/employees/add", function(request, response){
+  dataService.getAllDepartments()
+.then(function(deptData){
+  console.log("add employee dept promise enagaged");
+  response.render('addEmployee',{departments: deptData});
+})
 });
+
+app.post("/employees/add",function(request,response){ //When the post request come from the form this route is executed.
+dataService.addEmployee(request.body)
+.then(function(data){
+  response.redirect('/employees')
+  console.log("Server Side message - "+data);  
+})  //response.redirect('/employees');
+.catch(function(data){
+  console.log(data);
+  response.sendStatus;
+});
+});
+
 app.get("/images/add", function(request, response){
 //  response.sendFile(path.join(__dirname+ '/views/addImage.html'))
 response.render('addImage');
@@ -212,25 +227,47 @@ app.get("/employees", function(request, response){
     }
 });
 //Special employee/value get request
-app.get('/employee/:value', function(request, response){
- // console.log("This is a new one " + request.params.value);
-  dataService.getEmployeeByNum(request.params.value) //sending the value to dataService
-  .then(function(dataFromPromiseResolve){
-    response.render('employee', {employee: dataFromPromiseResolve})
-  })
-  .catch(function(dataFromPromiseResolve){
-    response.render('employee',{message: "no results"});
+app.get("/employee/:empNum", (req, res) => {
+  // initialize an empty object to store the values
+  let viewData = {};
+  dataService.getEmployeeByNum(req.params.empNum)
+  .then((data) => {
+  viewData.data = data; //store employee data in the "viewData" object as "data"
+  }).catch(()=>{
+  viewData.data = null; // set employee to null if there was an error
+  }).then(dataService.getDepartments)
+  .then((data) => {
+  viewData.departments = data; // store department data in the "viewData" object as "departments"
+ 
+  // loop through viewData.departments and once we have found the departmentId that matches
+  // the employee's "department" value, add a "selected" property to the matching
+  // viewData.departments object
+  for (let i = 0; i < viewData.departments.length; i++) {
+  if (viewData.departments[i].departmentId == viewData.data.department) {
+  viewData.departments[i].selected = true;
+  }
+  }
+  }).catch(()=>{
+  viewData.departments=[]; // set departments to empty if there was an error
+  }).then(()=>{
+  if(viewData.data == null){ // if no employee - return an error
+  res.status(404).send("Employee Not Found");
+  }else{
+  res.render("employee", { viewData: viewData }); // render the "employee" view
+  }
   });
-});
+ });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 
 //Departments
 app.get("/departments", function(request, response){
   dataService.getAllDepartments()
   .then(function(dataFromPromiseResolve){
+    console.log("I awas awakened");
     response.render('departments', {departments: dataFromPromiseResolve});
   })
   .catch(function(dataFromPromiseResolve){
+    console.log("NOPE you failed! ")
     response.render('departments',{message: dataFromPromiseResolve});
   });
 });

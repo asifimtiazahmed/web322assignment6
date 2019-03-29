@@ -105,10 +105,12 @@ function getAllDepartments()
   return new Promise(function (resolve, reject) {
     Departments.findAll()
     .then(function(deptData){
-      resolve(deptData);
-
-    })
-    reject("Sorry, No entries found");
+      console.log(deptData);
+      if (deptData.length > 0)
+        resolve(deptData);
+        else
+        reject("Sorry, No entries found");
+    });
    });
 }
 module.exports.getAllDepartments = getAllDepartments;
@@ -144,10 +146,14 @@ function addEmployee(empData){
       status: empData.status,
       department: empData.department,
       hireDate: empData.hireDate
-    }).then(function(){console.log("Employee Created")})
+    }).then(function(){
+      console.log("Employee Created");
+      resolve({message: "Employee Created Successfully"}); 
+    })
     .catch(function(err){
     console.log(err, request.body);
-    resolve({message: "Employee Created Successfully"});
+    console.log("Am I being resolved?? =========================>>>>>")
+    
     reject({message: "Unable to create Employee"});
     });
    });
