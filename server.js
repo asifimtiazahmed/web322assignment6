@@ -230,29 +230,40 @@ app.get("/employees", function(request, response){
 app.get("/employee/:empNum", (req, res) => {
   // initialize an empty object to store the values
   let viewData = {};
+ // console.log(req.params.empNum);//====>>
   dataService.getEmployeeByNum(req.params.empNum)
   .then((data) => {
-  viewData.data = data; //store employee data in the "viewData" object as "data"
+    //console.log("First .then data invoked"); //=====>
+    //console.log(data); //======>
+  viewData.data = data;
+  //console.log(viewData.data); //store employee data in the "viewData" object as "data"
+  //console.log("*******************");
   }).catch(()=>{
   viewData.data = null; // set employee to null if there was an error
-  }).then(dataService.getDepartments)
+  });
+
+  dataService.getAllDepartments()
   .then((data) => {
+    console.log("Second .then was invoked with the result: ");//================>
+    console.log(data);
   viewData.departments = data; // store department data in the "viewData" object as "departments"
- 
-  // loop through viewData.departments and once we have found the departmentId that matches
-  // the employee's "department" value, add a "selected" property to the matching
-  // viewData.departments object
+
   for (let i = 0; i < viewData.departments.length; i++) {
-  if (viewData.departments[i].departmentId == viewData.data.department) {
+    console.log("Search loop ran-------------------------------");//================>
+  if (viewData.departments[i].departmentId === viewData.data.department) {
   viewData.departments[i].selected = true;
   }
   }
   }).catch(()=>{
-  viewData.departments=[]; // set departments to empty if there was an error
+  viewData.departments=[];
+  console.log("Second Catch envoked"); // set departments to empty if there was an error
   }).then(()=>{
+    console.log("Third .then was invoked");//================>
   if(viewData.data == null){ // if no employee - return an error
   res.status(404).send("Employee Not Found");
+  console.log("third catch line 269 envoked");
   }else{
+    console.log("Page sent for rendering");//================>
   res.render("employee", { viewData: viewData }); // render the "employee" view
   }
   });
@@ -272,6 +283,33 @@ app.get("/departments", function(request, response){
   });
 });
 
+//Delete Department
+//
+app.get("/departments/delete/:departmentId", function(req, res) 
+{
+    const departmentId = req.params.departmentId;
+
+    dataService.deleteDepartmentById(departmentId)
+    .then(function(result) 
+    {
+        res.redirect("/departments");
+    })
+    .catch(function(err) 
+    {
+        res.status(500).send("Unable to Remove Department / Department not found)");
+    });
+});
+
+// Delete employee
+
+
+app.get("/employee/delete/:empNum", (req, res) =>{
+  dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
+      res.redirect("/employees");
+  }).catch(()=>{
+      res.status(500).send("Unable to Remove Employee / Employee not found");
+  });
+});
 
 
 //Handle 404, This action needs to be at the end of the server file because otherwise it will catch other page requests.

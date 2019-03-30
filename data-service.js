@@ -105,7 +105,8 @@ function getAllDepartments()
   return new Promise(function (resolve, reject) {
     Departments.findAll()
     .then(function(deptData){
-      console.log(deptData);
+     // console.log(deptData);
+     console.log("dept found");
       if (deptData.length > 0)
         resolve(deptData);
         else
@@ -307,3 +308,46 @@ departmentData.departmentName=null;
   })
 }
 module.exports.updateDepartment = updateDepartment;
+
+//Delete Department
+//
+module.exports.deleteDepartmentById = function(departmentId) 
+{
+    return new Promise(function (resolve, reject) 
+    {
+        sequelize.sync().then(function() {
+        Departments.destroy
+        ({
+            where: 
+            {
+				departmentId: departmentId
+			}
+        })
+        .then(function() 
+        {
+			 resolve()
+        })
+        .catch(function(error) 
+        {
+			 reject('Unable to delete department');
+        });
+    });
+	});
+}
+
+
+//Delete Employee
+//
+module.exports.deleteEmployeeByNum = (empNum) =>{
+    return new Promise(function(resolve, reject){
+        Employees.destroy({
+            where:{
+                employeeNum: empNum
+            }
+        }).then(()=>{
+            resolve("Employee Deleted");
+        }).catch(()=>{
+            reject("Cannot delete Employee");
+        })
+    });
+};
