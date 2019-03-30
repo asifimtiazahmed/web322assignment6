@@ -301,7 +301,7 @@ app.get("/departments/delete/:departmentId", function(req, res)
 });
 
 // Delete employee
-
+                                                                
 
 app.get("/employee/delete/:empNum", (req, res) =>{
   dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
