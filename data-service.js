@@ -282,8 +282,11 @@ if(departmentData.departmentId=="")
   departmentData.departmentId=null;
 if(departmentData.departmentName=="")
 departmentData.departmentName=null;
+var deptID = departmentData.length +1;
 Departments.create({
-  departmentName: departmentData.departmentName
+  departmentId: deptID,
+  departmentName: departmentData.departmentName,
+
 }).then(function(){console.log("New Dept Created")})
 .catch(function(err){console.log(err)})
 resolve({message: "Successfully Created New Dept"});
@@ -311,7 +314,8 @@ module.exports.updateDepartment = updateDepartment;
 
 //Delete Department
 //
-module.exports.deleteDepartmentById = function(departmentId) 
+
+function deleteDepartmentById(departmentId)
 {
     return new Promise(function (resolve, reject) 
     {
@@ -334,20 +338,24 @@ module.exports.deleteDepartmentById = function(departmentId)
     });
 	});
 }
-
+module.exports.deleteDepartmentById =  deleteDepartmentById;
 
 //Delete Employee
 //
-module.exports.deleteEmployeeByNum = (empNum) =>{
+
+function deleteEmployeeByNum(empNum){
     return new Promise(function(resolve, reject){
         Employees.destroy({
             where:{
                 employeeNum: empNum
             }
         }).then(()=>{
+          console.log("Deleted!")
             resolve("Employee Deleted");
         }).catch(()=>{
+          console.log("cannot delete employee")
             reject("Cannot delete Employee");
         })
     });
 };
+module.exports.deleteEmployeeByNum = deleteEmployeeByNum;

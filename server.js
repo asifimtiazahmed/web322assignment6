@@ -100,9 +100,11 @@ app.get("/departments/add",function(request, response){
 });
 app.post("/departments/add",function(request,response){ //When the post request come from the form this route is executed.
 dataService.addDepartment(request.body)
-.then(response.redirect('/departments'));
-console.log("Department Added! Server side msg");
-
+.then(response.redirect('/departments')
+)
+.catch(function(err){
+console.log(err);
+})
 });
 app.post("/departments/update",function(request,response){ //When the post request come from the form this route is executed.
   dataService.updateDepartment(request.body);
@@ -274,7 +276,6 @@ app.get("/employee/:empNum", (req, res) => {
 app.get("/departments", function(request, response){
   dataService.getAllDepartments()
   .then(function(dataFromPromiseResolve){
-    console.log("I awas awakened");
     response.render('departments', {departments: dataFromPromiseResolve});
   })
   .catch(function(dataFromPromiseResolve){
@@ -303,7 +304,7 @@ app.get("/departments/delete/:departmentId", function(req, res)
 // Delete employee
                                                                 
 
-app.get("/employee/delete/:empNum", (req, res) =>{
+app.get("/employees/delete/:empNum", (req, res) =>{
   dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
       res.redirect("/employees");
   }).catch(()=>{
