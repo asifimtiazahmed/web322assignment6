@@ -8,7 +8,7 @@
 *
 * Online (Heroku) URL:  
 * 
-*  https://infinite-badlands-60405.herokuapp.com/ 
+*  ht
 ********************************************************************************/ 
 //Host: ec2-54-221-201-212.compute-1.amazonaws.com
 // Database: de9fcken8a8867
