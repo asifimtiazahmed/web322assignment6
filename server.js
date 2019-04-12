@@ -4,11 +4,11 @@
 * No part of this assignment has been copied manually or electronically from any other source
 * (including web sites) or distributed to other students.
 *
-* Name: Asif Imtiaz Ahmed Student ID: 138408174 Date: 03/16/2019
+* Name: Asif Imtiaz Ahmed Student ID: 138408174 Date: 04/06/2019
 *
 * Online (Heroku) URL:  
 * 
-*  ht
+*  https://evening-chamber-40410.herokuapp.com/
 ********************************************************************************/ 
 //Host: ec2-54-221-201-212.compute-1.amazonaws.com
 // Database: de9fcken8a8867
@@ -17,6 +17,8 @@
 //Password: e577643532f9ea5b58ac78253cac18517e40a594356e113f28e0c3e5ad363344
 //URI: postgres://xwfuygaaaczsqo:e577643532f9ea5b58ac78253cac18517e40a594356e113f28e0c3e5ad363344@ec2-54-221-201-212.compute-1.amazonaws.com:5432/de9fcken8a8867
 //heroku pg:psql postgresql-amorphous-92955 --app infinite-badlands-60405
+//mongo DB user: dbuser, pass: dbuser123
+var dataServiceAuth = require ('data-service-auth.js');
 var dataService = require('./data-service'); //linking the data-service file for this module
 var express = require('express'); //linking the express module here
 var exphbs = require('express-handlebars');
